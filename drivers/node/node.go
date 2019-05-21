@@ -117,6 +117,12 @@ type Driver interface {
 
 	// SystemCheck checks whether core files are present on the given node.
 	SystemCheck(node Node, options ConnectionOpts) (string, error)
+
+	// AttachedDisks returns list of disks attached to a node
+	AttachedDisks(node Node) ([]string, error)
+
+	// Tags returns labels/tags attached to it
+	Tags(volumeID string) (map[string]string, error)
 }
 
 // Register registers the given node driver
@@ -217,5 +223,19 @@ func (d *notSupportedDriver) SystemCheck(node Node, options ConnectionOpts) (str
 	return "", &errors.ErrNotSupported{
 		Type:      "Function",
 		Operation: "SystemCheck()",
+	}
+}
+
+func (d *notSupportedDriver) AttachedDisks(node Node) ([]string, error) {
+	return []string{}, &errors.ErrNotSupported{
+		Type:      "Function",
+		Operation: "AttachedDisks()",
+	}
+}
+
+func (d *notSupportedDriver) Tags(volumeID string) (map[string]string, error) {
+	return map[string]string{}, &errors.ErrNotSupported{
+		Type:      "Function",
+		Operation: "Tags()",
 	}
 }

@@ -14,6 +14,10 @@ import (
 	. "github.com/portworx/torpedo/tests"
 )
 
+const (
+	ASG_VOLUME_TAG_KEY = "pwx_cluster_id"
+)
+
 func TestBasic(t *testing.T) {
 	RegisterFailHandler(Fail)
 
@@ -25,6 +29,21 @@ func TestBasic(t *testing.T) {
 
 var _ = BeforeSuite(func() {
 	InitInstance()
+
+	nodeMap := node.GetNodesByName()
+	for _, node := range nodeMap {
+
+		disks, err := Inst().N.AttachedDisks(node)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(disks).NotTo(BeEmpty())
+
+		for _, disk := range disks {
+			Step(fmt.Sprintf("Validate [%s] disk have tag [%s]", disk, ASG_VOLUME_TAG_KEY), func() {
+				tags, err := Inst().N.Tags(disk)
+				Expect(tags).To(HaveKey(ASG_VOLUME_TAG_KEY))
+			})
+		}
+	}
 })
 
 // This test performs basic test of starting an application and destroying it (along with storage)

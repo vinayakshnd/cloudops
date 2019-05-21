@@ -19,6 +19,8 @@ import (
 	_ "github.com/portworx/torpedo/drivers/node/aws"
 	// import ssh driver to invoke it's init
 	_ "github.com/portworx/torpedo/drivers/node/ssh"
+	// import gke driver to invoke it's init
+	_ "github.com/portworx/torpedo/drivers/node/gke"
 	"github.com/portworx/torpedo/drivers/scheduler"
 
 	// import scheduler drivers to invoke it's init
@@ -84,6 +86,7 @@ func InitInstance() {
 
 	err = Inst().N.Init()
 	expect(err).NotTo(haveOccurred())
+
 }
 
 // ValidateCleanup checks that there are no resource leaks after the test run

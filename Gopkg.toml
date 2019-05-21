@@ -82,3 +82,11 @@
 [prune]
   go-tests = true
   unused-packages = true
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/libopenstorage/cloudops"
+
+[[constraint]]
+  name = "google.golang.org/api"
+  version = "0.4.0"
